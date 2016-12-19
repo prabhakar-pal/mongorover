@@ -57,7 +57,11 @@ newlib_compat(lua_State *L,
 #if LUA_VERSION_NUM >= 502
     luaL_newlib(L, R);
 #else
-    luaopen_base(L);
+
+    lua_State *l = lua_open();
+    lua_pushcfunction(l,luaopen_base);
+    lua_call(l,0,0);
+
     luaL_register(L, name_for_lua51, R);
 #endif
 }
